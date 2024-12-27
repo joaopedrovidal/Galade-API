@@ -16,4 +16,32 @@ const novaPessoa = async (req, res) => {
     }
 };
 
-module.exports = { novaPessoa };
+const cadastrarPessoaComCnpj = async (cnpjData) => {
+
+    const { nome, fantasia, endereco, cnpj, bairro, uf, cidade, cep, numero, ie } = cnpjData;
+
+    try {
+        const result = await client.query(
+            `INSERT INTO pessoa (nome, nomefantasia, cpfcnpj, logradouro, bairro, uf, cidade, cep, numero, ie)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+            [
+                nome || '',                    
+                cnpj || '',             
+                logradouro || '',         
+                bairro || '',           
+                uf || '',               
+                cidade || '',           
+                cep || '',              
+                numero || '',           
+                ie || ''                
+            ]
+        );
+
+        console.log('Pessoa cadastrada com sucesso:', result.rows[0]);
+    } catch (error) {
+        console.error('Erro ao cadastrar pessoa:', error.message);
+        throw new Error('Erro ao cadastrar a pessoa');
+    }
+};
+
+module.exports = { novaPessoa, cadastrarPessoaComCnpj };
