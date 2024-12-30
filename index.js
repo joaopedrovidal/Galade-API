@@ -5,6 +5,8 @@ const router = require ('./src/routes/routes')
 
 const app = express(); 
 
+require('dotenv').config();
+
 app.use(express.json());
 
 client.query('SELECT NOW()')
